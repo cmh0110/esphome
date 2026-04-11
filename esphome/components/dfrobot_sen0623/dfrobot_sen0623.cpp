@@ -7,13 +7,13 @@
 std::pair<uint8_t, uint8_t> OP_RST_SENSOR = {0x01, 0x02};
 std::pair<uint8_t, uint8_t> OP_INIT = {0x01, 0x83};
 std::pair<uint8_t, uint8_t> OP_REQ_MODE = {0x02, 0xA8};
-std::pair<uint8_t, uint8_t> OP_REQ_HEART_RATE = {0x85, 0x82};
-std::pair<uint8_t, uint8_t> OP_REQ_BREATH_RATE = {0x81, 0x82};
-std::pair<uint8_t, uint8_t> OP_REQ_HUMAN_PRESENCE = {0x80, 0x81};
+std::pair<uint8_t, uint8_t> OP_REQ_HEART_RATE = {0x85, 0x02};
+std::pair<uint8_t, uint8_t> OP_REQ_BREATH_RATE = {0x81, 0x02};
+std::pair<uint8_t, uint8_t> OP_REQ_HUMAN_PRESENCE = {0x80, 0x01};
 std::pair<uint8_t, uint8_t> OP_REQ_HUMAN_MOVEMENT = {0x80, 0x82};
 std::pair<uint8_t, uint8_t> OP_REQ_HUMAN_MOVE_RANGE = {0x80, 0x83};
 std::pair<uint8_t, uint8_t> OP_REQ_HUMAN_DISTANCE = {0x80, 0x84};
-std::pair<uint8_t, uint8_t> OP_SET_MODE = {0x02, 0x08};
+std::pair<uint8_t, uint8_t> OP_SET_MODE = {0x01, 0x01};
 uint8_t MODE_SLEEP = 0x02;
 uint8_t MODE_FALL = 0x01;
 
@@ -68,19 +68,13 @@ namespace esphome
             buffer.push_back(0x59);
             buffer.push_back(control);
             buffer.push_back(command);
-            buffer.push_back((senLen >> 8) & 0xff);
-            buffer.push_back(senLen & 0xff);
+            buffer.push_back(0x00);
+            buffer.push_back(0x01);
             for (uint8_t i = 0; i < senLen; i++)
             {
                 buffer.push_back(senData[i]);
             }
-            // Calculate check
-            uint8_t crSum = 0;
-            for (uint8_t i = 0; i < buffer.size(); i++)
-            {
-                crSum += buffer.data()[i];
-            }
-            buffer.push_back(crSum & 0xff);
+            buffer.push_back(0x00);
             buffer.push_back(0x54);
             buffer.push_back(0x43);
 
