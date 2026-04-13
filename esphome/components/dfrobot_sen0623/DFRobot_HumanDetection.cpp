@@ -16,9 +16,6 @@ namespace esphome
 {
     namespace DFRobot_HumanDetection
     {
-        DFRobot_HumanDetection::DFRobot_HumanDetection()
-        {
-        }
         uint8_t DFRobot_HumanDetection::begin(void)
         {
             delay(10000); // Startup initialization wait time
