@@ -9,6 +9,7 @@
  * @url https://github.com/DFRobot/DFRobot_HumanDetection
  */
 
+#pragma once
 #define _DFROBOT_HUMAN_DETECTION_
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "DFRobot_HumanDetection.h"
+
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
-#include "esphome/components/dfrobot_sen0623/DFRobot_HumanDetection.h"
 
 #ifdef USE_SENSOR
 #include "esphome/components/sensor/sensor.h"
