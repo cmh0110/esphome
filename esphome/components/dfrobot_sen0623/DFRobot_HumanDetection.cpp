@@ -14,11 +14,12 @@
 
 uint8_t DFRobot_HumanDetection::begin(void)
 {
-    esphome::delay(10000); // Startup initialization wait time
+    esphome::delay(1000); // Startup initialization wait time
     uint8_t data = 0x0f;
     uint8_t buf[10];
     if (getData(0x01, 0x83, 1, &data, buf) == 0)
     {
+        ESP_LOGE("C1001 did not start: %02X", 0);
         // esphome::delay(100);
         return 0;
     }
