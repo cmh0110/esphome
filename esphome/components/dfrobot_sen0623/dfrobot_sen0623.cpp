@@ -37,12 +37,12 @@ namespace esphome
 
         void DfrobotSen0623Component::cmd_mode_fall()
         {
-            sen0623_.configWorkMode(DFRobot_HumanDetection::DFRobot_HumanDetection::eWorkMode::eFallingMode);
+            sen0623_.configWorkMode(DFRobot_HumanDetection::eWorkMode::eFallingMode);
         }
 
         void DfrobotSen0623Component::cmd_mode_sleep()
         {
-            sen0623_.configWorkMode(DFRobot_HumanDetection::DFRobot_HumanDetection::eWorkMode::eSleepMode);
+            sen0623_.configWorkMode(DFRobot_HumanDetection::eWorkMode::eSleepMode);
         }
 
         void DfrobotSen0623Component::setup()
@@ -66,13 +66,13 @@ namespace esphome
 
         void DfrobotSen0623Component::populateData() {
             if (this->human_distance_sensor_ != nullptr) {
-                this->human_distance_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanDistance));
+                this->human_distance_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::eHumanDistance));
             }
             if (this->human_move_range_sensor_ != nullptr) {
-                this->human_move_range_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovingRange));
+                this->human_move_range_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::eHumanMovingRange));
             }
             if (this->presence_sensor_ != nullptr) {
-                uint8_t presence = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanPresence);
+                uint8_t presence = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanPresence);
                 switch (presence)
                 {
                 case 0:
@@ -88,7 +88,7 @@ namespace esphome
                 ESP_LOGD("C1001", "Human presence: %s", presence ? "detected" : "not detected");
             }
             if (this->movement_text_sensor_ != nullptr) {
-                uint8_t movement = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovement);
+                uint8_t movement = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanMovement);
                 switch (movement)
                 {
                 case 0:
@@ -107,7 +107,7 @@ namespace esphome
                 ESP_LOGD("C1001", "Movement status: %s", movement ? "active" : "still");
             }
             if (this->sleep_state_text_sensor_ != nullptr) {
-                uint8_t sleep_state = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovement);
+                uint8_t sleep_state = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanMovement);
                 std::string state_str;
                 
                 switch (sleep_state) {

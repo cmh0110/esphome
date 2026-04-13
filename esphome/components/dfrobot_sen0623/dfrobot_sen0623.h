@@ -81,7 +81,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     button::Button *reset_button_{nullptr};
     button::Button *mode_fall_button_{nullptr};
     button::Button *mode_sleep_button_{nullptr};
-    DFRobot_HumanDetection::DFRobot_HumanDetection sen0623_;
+    DFRobot_HumanDetection sen0623_;
 };
 
 
