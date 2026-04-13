@@ -55,23 +55,8 @@ namespace esphome
 
         void DfrobotSen0623Component::loop()
         {
-            static uint8_t buffer[64];
-            static int buffer_index = 0;
-            
-            while (available()) {
-                uint8_t byte = read();
-                
-                // Store byte in buffer
-                if (buffer_index < sizeof(buffer)) {
-                    buffer[buffer_index++] = byte;
-                }
-                
-                // Check for end of frame marker (0x54, 0x43)
-                if (buffer_index >= 2 && buffer[buffer_index - 2] == 0x54 && buffer[buffer_index - 1] == 0x43) {
-                    processFrame(buffer, buffer_index);
-                    buffer_index = 0;
-                }
-            }
+            populateData();
+            delay(50);
         }
 
         void DfrobotSen0623Component::dump_config()
@@ -79,112 +64,79 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "DfrobotSen0623Component");
         }
 
-        void DfrobotSen0623Component::processFrame(uint8_t *buffer, int length) {
-            // Minimum frame length check
-            if (length < 10) return;
-            
-            // Check frame header (0x53, 0x59)
-            if (buffer[0] != 0x53 || buffer[1] != 0x59) return;
-            
-            // Process different frame types based on the command bytes
-            
-                    if (operation == OP_REQ_HUMAN_DISTANCE) {
-                        if (this->human_distance_sensor_ != nullptr) {
-                            this->human_distance_sensor_->publish_state(data[0] << 8 | data[1]);
-                        }
-                    } else 
-                    if (operation == OP_REQ_HUMAN_MOVE_RANGE) {
-                        if (this->human_move_range_sensor_ != nullptr) {
-                            this->human_move_range_sensor_->publish_state(data[0]);
-                        }
-                    }
-            
-            // Human presence information (0x80, 0x01)
-            if (buffer[2] == 0x80 && buffer[3] == 0x01 && buffer[4] == 0x00 && buffer[5] == 0x01) {
-                bool presence = buffer[6] > 0;
-                if (this->presence_sensor_ != nullptr) {
-                    switch (presence)
-                    {
-                    case 0:
-                        this->presence_sensor_->publish_state(0);
-                        break;
-                    case 1:
-                        this->presence_sensor_->publish_state(1);
-                        break;
-                    default:
-                        ESP_LOGE(TAG, "INVALID PRESENCE: %02X", presence);
-                        break;
-                    }
+        void DfrobotSen0623Component::populateData() {
+            if (this->human_distance_sensor_ != nullptr) {
+                this->human_distance_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanDistance));
+            }
+            if (this->human_move_range_sensor_ != nullptr) {
+                this->human_move_range_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovingRange));
+            }
+            if (this->presence_sensor_ != nullptr) {
+                uint8_t presence = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanPresence);
+                switch (presence)
+                {
+                case 0:
+                    this->presence_sensor_->publish_state(0);
+                    break;
+                case 1:
+                    this->presence_sensor_->publish_state(1);
+                    break;
+                default:
+                    ESP_LOGE(TAG, "INVALID PRESENCE: %02X", presence);
+                    break;
                 }
                 ESP_LOGD("C1001", "Human presence: %s", presence ? "detected" : "not detected");
             }
-            
-            // Movement information (0x80, 0x02)
-            else if (buffer[2] == 0x80 && buffer[3] == 0x02 && buffer[4] == 0x00 && buffer[5] == 0x01) {
-                // 0x01 = stationary, 0x02 = active
-                uint8_t movement = buffer[6];
-                if (this->movement_text_sensor_ != nullptr) {
-                    switch (movement)
-                    {
-                    case 0:
-                        this->movement_text_sensor_->publish_state("none");
-                        break;
-                    case 1:
-                        this->movement_text_sensor_->publish_state("still");
-                        break;
-                    case 2:
-                        this->movement_text_sensor_->publish_state("active");
-                        break;
-                    default:
-                        ESP_LOGD(TAG, "INVALID MOVEMENT: %02X", movement);
-                        break;
-                    }
+            if (this->movement_text_sensor_ != nullptr) {
+                uint8_t movement = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovement);
+                switch (movement)
+                {
+                case 0:
+                    this->movement_text_sensor_->publish_state("none");
+                    break;
+                case 1:
+                    this->movement_text_sensor_->publish_state("still");
+                    break;
+                case 2:
+                    this->movement_text_sensor_->publish_state("active");
+                    break;
+                default:
+                    ESP_LOGD(TAG, "INVALID MOVEMENT: %02X", movement);
+                    break;
                 }
                 ESP_LOGD("C1001", "Movement status: %s", movement ? "active" : "still");
             }
-            
-            // Sleep state information (0x81, 0x01)
-            else if (buffer[2] == 0x81 && buffer[3] == 0x01 && buffer[4] == 0x00 && buffer[5] == 0x01) {
-            uint8_t state = buffer[6];
-            std::string state_str;
-            
-            switch (state) {
-                case 0:
-                state_str = "Deep Sleep";
-                break;
-                case 1:
-                state_str = "Light Sleep";
-                break;
-                case 2:
-                state_str = "Awake";
-                break;
-                case 3:
-                state_str = "None";
-                break;
-                default:
-                state_str = "Unknown";
-            }
-            
-            sleep_state_sensor->publish_state(state_str);
-            ESP_LOGD("C1001", "Sleep state: %s", state_str.c_str());
-            }
-            
-            // Respiratory rate value (0x81, 0x02)
-            else if (buffer[2] == 0x81 && buffer[3] == 0x02 && buffer[4] == 0x00 && buffer[5] == 0x01) {
-                uint8_t rate = buffer[6];
-                if (this->breath_rate_sensor_ != nullptr) {
-                    this->breath_rate_sensor_->publish_state(rate);
+            if (this->sleep_state_text_sensor_ != nullptr) {
+                uint8_t sleep_state = sen0623_.smHumanData(DFRobot_HumanDetection::DFRobot_HumanDetection::eHumanMovement);
+                std::string state_str;
+                
+                switch (sleep_state) {
+                    case 0:
+                    state_str = "Deep Sleep";
+                    break;
+                    case 1:
+                    state_str = "Light Sleep";
+                    break;
+                    case 2:
+                    state_str = "Awake";
+                    break;
+                    case 3:
+                    state_str = "None";
+                    break;
+                    default:
+                    state_str = "Unknown";
                 }
+                this->sleep_state_text_sensor_->publish_state(state_str);
+                ESP_LOGD("C1001", "Sleep state: %s", state_str.c_str());
+            }
+            if (this->breath_rate_sensor_ != nullptr) {
+                uint8_t rate = sen0623_.getBreatheValue();
+                this->breath_rate_sensor_->publish_state(rate);
                 ESP_LOGD("C1001", "Respiration rate: %d bpm", rate);
             }
-            
-            // Heart rate value (0x85, 0x02)
-            else if (buffer[2] == 0x85 && buffer[3] == 0x02 && buffer[4] == 0x00 && buffer[5] == 0x01) {
-                uint8_t rate = buffer[6];
-                
-                if (this->heart_rate_sensor_ != nullptr) {
-                    this->heart_rate_sensor_->publish_state(rate);
-                }
+            if (this->heart_rate_sensor_ != nullptr) {
+                uint8_t rate = sen0623_.getHeartRate();
+                this->heart_rate_sensor_->publish_state(rate);
                 ESP_LOGD("C1001", "Heart rate: %d bpm", rate);
             }
         }

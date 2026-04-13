@@ -40,7 +40,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     void print_data(std::string tag, const uint8_t *bytes, size_t len);
     void DfrobotSen0623Component::configWorkMode(uint8_t mode);
     void DfrobotSen0623Component::sensorReset();
-    void DfrobotSen0623Component::processFrame(uint8_t *buffer, int length);
+    void DfrobotSen0623Component::populateData();
 
     // sensor
     void set_heart_rate_sensor(sensor::Sensor *rate_sensor) { heart_rate_sensor_ = rate_sensor; }
@@ -76,6 +76,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
 
     text_sensor::TextSensor *status_text_sensor_{nullptr};
     text_sensor::TextSensor *movement_text_sensor_{nullptr};
+    text_sensor::TextSensor *sleep_state_text_sensor_{nullptr};
 
     button::Button *reset_button_{nullptr};
     button::Button *mode_fall_button_{nullptr};
