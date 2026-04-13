@@ -14,12 +14,12 @@
 
 uint8_t DFRobot_HumanDetection::begin(void)
 {
-    delay(10000); // Startup initialization wait time
+    esphome::delay(10000); // Startup initialization wait time
     uint8_t data = 0x0f;
     uint8_t buf[10];
     if (getData(0x01, 0x83, 1, &data, buf) == 0)
     {
-        // delay(100);
+        // esphome::delay(100);
         return 0;
     }
     return 1;
@@ -43,7 +43,7 @@ uint8_t DFRobot_HumanDetection::configWorkMode(eWorkMode mode)
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
 
-            delay(10000); // Waiting for mode switch to start
+            esphome::delay(10000); // Waiting for mode switch to start
 
             if (getData(0x02, 0xA8, 1, &data, buf) == 0) // Query current working mode
             {
@@ -122,7 +122,7 @@ uint8_t DFRobot_HumanDetection::sensorRet(void)
     uint8_t buf[10];
     if (getData(0x01, 0x02, 1, &data, buf) == 0)
     {
-        delay(10000);
+        esphome::delay(10000);
         return 0;
     }
     return 1;
@@ -910,15 +910,15 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
             break;
         case CMD_END_L:
             retData[8 + _len] = data;
-            delay(50);
+            esphome::delay(50);
             return 0;
         default:
             break;
         }
 
-        delay(50);
+        esphome::delay(50);
     }
-    delay(50);
+    esphome::delay(50);
     return 0;
 }
 
