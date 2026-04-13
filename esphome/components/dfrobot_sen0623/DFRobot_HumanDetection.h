@@ -462,7 +462,7 @@ private:
      */
     uint8_t getData(uint8_t con, uint8_t cmd, uint16_t len, uint8_t *senData, uint8_t *retData);
     uint8_t sumData(uint8_t len, uint8_t *buf);
-    void DFRobot_HumanDetection::write_array(const uint8_t *data, size_t len);
+    void write_array(const uint8_t *data, size_t len);
 };
 }
 }
