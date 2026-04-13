@@ -778,7 +778,7 @@ uint8_t DFRobot_HumanDetection::dmFallConfig(eDmFallConfig con, uint32_t data)
 
 uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, uint8_t *senData, uint8_t *retData)
 {
-    uint32_t timeStart = millis();
+    uint32_t timeStart = esphome::millis();
     uint32_t timeStart1 = 0;
     uint8_t data = 0, state = CMD_WHITE;
     uint16_t _len = 0;
@@ -798,14 +798,14 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
 
     while (true)
     {
-        if ((millis() - timeStart1) > 1000)
+        if ((esphome::millis() - timeStart1) > 1000)
         {
             while (available() > 0)
             {
                 read();
             }
             write_array(cmdBuf, 9 + len);
-            timeStart1 = millis();
+            timeStart1 = esphome::millis();
             count = 0;
         }
 
@@ -813,11 +813,11 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
         {
             data = read();
             // DBG(data);
-            // timeStart1 = millis();
+            // timeStart1 = esphome::millis();
         }
 
         // Update timeout check
-        if ((millis() - timeStart) > TIME_OUT)
+        if ((esphome::millis() - timeStart) > TIME_OUT)
         {
             ESP_LOGE("DFRobot_HumanDetection", "Time out");
             return 2;
