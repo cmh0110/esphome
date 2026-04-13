@@ -2,6 +2,7 @@
 
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
+#include "esphome/components/dfrobot_sen0623/DFRobot_HumanDetection.h"
 
 #ifdef USE_SENSOR
 #include "esphome/components/sensor/sensor.h"
@@ -26,7 +27,7 @@
 namespace esphome {
 namespace dfrobot_sen0623 {
 
-class DfrobotSen0623Component : public uart::UARTDevice, public PollingComponent {
+class DfrobotSen0623Component : public uart::UARTDevice, public Component {
 #ifdef USE_SWITCH
   SUB_SWITCH(request_rate)
   SUB_SWITCH(hp_led)
@@ -34,18 +35,12 @@ class DfrobotSen0623Component : public uart::UARTDevice, public PollingComponent
 
 
   public:
-    void request(std::pair<uint8_t, uint8_t> operation);
-
-    void forge_packet(uint8_t control, uint8_t command, uint8_t *senData, uint16_t senLen);
-
-    void send_packet(uint8_t *packetData, size_t len);
-
     bool process_packet(uint8_t *packetData, size_t len);
 
-    uint8_t wait_for_packet(std::pair<uint8_t, uint8_t> operation);
-    uint8_t read_packet(uint8_t *packetData);
-
     void print_data(std::string tag, const uint8_t *bytes, size_t len);
+    void DfrobotSen0623Component::configWorkMode(uint8_t mode);
+    void DfrobotSen0623Component::sensorReset();
+    void DfrobotSen0623Component::processFrame(uint8_t *buffer, int length);
 
     // sensor
     void set_heart_rate_sensor(sensor::Sensor *rate_sensor) { heart_rate_sensor_ = rate_sensor; }
@@ -71,7 +66,6 @@ class DfrobotSen0623Component : public uart::UARTDevice, public PollingComponent
 
     void setup() override;
     void loop() override;
-    void update() override;
     void dump_config() override;
   protected:
     sensor::Sensor *heart_rate_sensor_{nullptr};
@@ -86,6 +80,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public PollingComponent
     button::Button *reset_button_{nullptr};
     button::Button *mode_fall_button_{nullptr};
     button::Button *mode_sleep_button_{nullptr};
+    DFRobot_HumanDetection::DFRobot_HumanDetection sen0623_;
 };
 
 
