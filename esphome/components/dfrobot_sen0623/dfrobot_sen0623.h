@@ -38,9 +38,9 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     bool process_packet(uint8_t *packetData, size_t len);
 
     void print_data(std::string tag, const uint8_t *bytes, size_t len);
-    void DfrobotSen0623Component::configWorkMode(uint8_t mode);
-    void DfrobotSen0623Component::sensorReset();
-    void DfrobotSen0623Component::populateData();
+    void configWorkMode(uint8_t mode);
+    void sensorReset();
+    void populateData();
 
     // sensor
     void set_heart_rate_sensor(sensor::Sensor *rate_sensor) { heart_rate_sensor_ = rate_sensor; }

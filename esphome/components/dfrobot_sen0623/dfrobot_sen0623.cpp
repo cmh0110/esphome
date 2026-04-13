@@ -42,7 +42,7 @@ namespace esphome
 
         void DfrobotSen0623Component::cmd_mode_sleep()
         {
-            sen0623_.configWorkMode(DFRobot_HumanDetection::DFRobot_HumanDetection::eWorkMode::eSleepingMode);
+            sen0623_.configWorkMode(DFRobot_HumanDetection::DFRobot_HumanDetection::eWorkMode::eSleepMode);
         }
 
         void DfrobotSen0623Component::setup()
