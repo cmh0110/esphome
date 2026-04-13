@@ -191,7 +191,7 @@ public:
      * @brief Constructor of the millimeter-wave human detection sensor
      * @param s Serial reception object
      */
-    DFRobot_HumanDetection() : UARTDevice(){};
+    DFRobot_HumanDetection(){};
     ~DFRobot_HumanDetection(){};
 
     /**

@@ -16,7 +16,7 @@ namespace esphome
 {
     namespace DFRobot_HumanDetection
     {
-        DFRobot_HumanDetection::DFRobot_HumanDetection() : uart::UARTDevice()
+        DFRobot_HumanDetection::DFRobot_HumanDetection()
         {
         }
         uint8_t DFRobot_HumanDetection::begin(void)
