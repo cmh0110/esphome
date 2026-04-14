@@ -809,18 +809,18 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
     {
         if ((esphome::millis() - timeStart1) > 1000)
         {
-            while (available() > 0)
+            while (this->available() > 0)
             {
-                data = read();
+                data = this->read();
             }
             write_array(cmdBuf, 9 + len);
             timeStart1 = esphome::millis();
             count = 0;
         }
 
-        if (available() > 0)
+        if (this->available() > 0)
         {
-            data = read();
+            data = this->read();
             // DBG(data);
             // timeStart1 = esphome::millis();
         }
@@ -944,7 +944,7 @@ uint8_t DFRobot_HumanDetection::sumData(uint8_t len, uint8_t *buf)
 
 void DFRobot_HumanDetection::write_array(const uint8_t *data, size_t len) {
     for (size_t i = 0; i < len; i++) {
-        write(data[i]);
+        this->write(data[i]);
     }
 }
 }
