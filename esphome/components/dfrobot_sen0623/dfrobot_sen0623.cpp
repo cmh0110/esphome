@@ -58,7 +58,6 @@ namespace esphome
             ESP_LOGD("Try to pop data", "Calling populateData for DfrobotSen0623Component...");
             populateData();
             ESP_LOGD("Poped data", "Finished populateData for DfrobotSen0623Component...");
-            delay(50);
         }
 
         void DfrobotSen0623Component::dump_config()

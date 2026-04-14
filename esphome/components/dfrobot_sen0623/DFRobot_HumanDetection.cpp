@@ -35,8 +35,6 @@ uint8_t DFRobot_HumanDetection::configWorkMode(eWorkMode mode)
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
 
-            esphome::delay(10000); // Waiting for mode switch to start
-
             if (getData(0x02, 0xA8, 1, &data, buf) == 0) // Query current working mode
             {
                 if (buf[6] == mode) // Verify if the mode switch was successful
@@ -114,7 +112,6 @@ uint8_t DFRobot_HumanDetection::sensorRet(void)
     uint8_t buf[10];
     if (getData(0x01, 0x02, 1, &data, buf) == 0)
     {
-        esphome::delay(10000);
         return 0;
     }
     return 1;
@@ -904,15 +901,11 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
             break;
         case CMD_END_L:
             retData[8 + _len] = data;
-            esphome::delay(50);
             return 0x00;
         default:
             break;
         }
-
-        esphome::delay(50);
     }
-    esphome::delay(50);
     return 0x00;
 }
 
