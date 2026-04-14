@@ -48,7 +48,7 @@ namespace esphome
         void DfrobotSen0623Component::setup()
         {
             ESP_LOGD("Setup", "Initializing DfrobotSen0623Component...");
-            // sen0623_.begin();
+            sen0623_.begin();
             ESP_LOGD("Sending sleep command", "Set mode to sleep for DfrobotSen0623Component...");
             // cmd_mode_sleep();
             ESP_LOGD("Set sleep command", "Set mode to sleep for DfrobotSen0623Component...");
