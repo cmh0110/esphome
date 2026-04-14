@@ -29,11 +29,10 @@ namespace esphome
 
         void DfrobotSen0623Component::cmd_reset()
         {
-            // uint8_t payload[1] = {0x0f};
-            // this->forge_packet(0x01, 0x02, payload, sizeof(payload));
-            sen0623_.sensorRet();
-            //delay(2000);
-            //this->request(4);
+            uint8_t data = 0x0f;
+            uint8_t buf[10];
+            uint8_t cmdBuf[10] = {0x53, 0x59, 0x01, 0x07, 0x00, 0x00, 0x00, 0x00, 0x54, 0x43};
+            write_array(cmdBuf, 10);
         }
 
         void DfrobotSen0623Component::cmd_mode_fall()
@@ -44,6 +43,7 @@ namespace esphome
             cmdBuf[6] = MODE_FALL;
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
+            cmd_reset();
         }
 
         void DfrobotSen0623Component::cmd_mode_sleep()
@@ -54,6 +54,7 @@ namespace esphome
             cmdBuf[6] = MODE_SLEEP;
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
+            cmd_reset();
         }
 
         void DfrobotSen0623Component::setup()
