@@ -14,9 +14,11 @@
 
 uint8_t DFRobot_HumanDetection::begin(void)
 {
+    ESP_LOGE("Begin", "Initializing DFRobot_HumanDetection...");
     esphome::delay(1000); // Startup initialization wait time
     uint8_t data = 0x0f;
     uint8_t buf[10];
+    ESP_LOGE("Checking if ready", "Initializing DFRobot_HumanDetection...");
     if (getData(0x01, 0x83, 1, &data, buf) == 0)
     {
         ESP_LOGE("C1001 did not start: %02X", 0);
@@ -796,6 +798,8 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
     cmdBuf[6 + len] = sumData(6 + len, cmdBuf);
     cmdBuf[7 + len] = 0x54;
     cmdBuf[8 + len] = 0x43;
+    
+    ESP_LOGE("Getting data", "DFRobot_HumanDetection: Sending command to get data (Con: %02X, Cmd: %02X, Len: %d)", con, cmd, len);
 
     while (true)
     {
