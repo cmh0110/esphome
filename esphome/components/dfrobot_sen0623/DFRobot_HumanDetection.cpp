@@ -811,7 +811,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
         {
             while (this->available() > 0)
             {
-                data = this->read();
+                this->read_byte(&data);
             }
             write_array(cmdBuf, 9 + len);
             timeStart1 = esphome::millis();
@@ -820,7 +820,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
 
         if (this->available() > 0)
         {
-            data = this->read();
+            this->read_byte(&data);
             // DBG(data);
             // timeStart1 = esphome::millis();
         }
