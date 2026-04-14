@@ -10,9 +10,13 @@
  */
 
 #pragma once
-#define _DFROBOT_HUMAN_DETECTION_
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
+namespace esphome
+{
+namespace dfrobot_sen0623
+{
+#define _DFROBOT_HUMAN_DETECTION_
 #define TIME_OUT 5 * 1000
 
 #define CMD_HEAD 0
@@ -60,7 +64,7 @@ typedef struct
 
 } sSleepStatistics;
 
-class DFRobot_HumanDetection : public esphome::uart::UARTDevice
+class DFRobot_HumanDetection : public uart::UARTDevice
 {
 public:
     /**
@@ -460,3 +464,5 @@ public:
     uint8_t sumData(uint8_t len, uint8_t *buf);
     void write_array(const uint8_t *data, size_t len);
 };
+}
+}

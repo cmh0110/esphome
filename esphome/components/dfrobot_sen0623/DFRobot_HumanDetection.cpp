@@ -12,6 +12,10 @@
 #include "DFRobot_HumanDetection.h"
 #include "stdio.h"
 
+namespace esphome
+{
+namespace dfrobot_sen0623
+{
 uint8_t DFRobot_HumanDetection::begin(void)
 {
     ESP_LOGE("Begin", "Initializing DFRobot_HumanDetection...");
@@ -942,4 +946,6 @@ void DFRobot_HumanDetection::write_array(const uint8_t *data, size_t len) {
     for (size_t i = 0; i < len; i++) {
         write(data[i]);
     }
+}
+}
 }
