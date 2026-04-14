@@ -40,7 +40,7 @@ namespace esphome
         {
             uint8_t data = 0x0f;
             uint8_t buf[10];
-            uint8_t cmdBuf[10] = {0x53, 0x59, 0x02, 0x08, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
+            uint8_t cmdBuf[10] = {0x53, 0x59, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
             cmdBuf[6] = MODE_FALL;
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
@@ -50,7 +50,7 @@ namespace esphome
         {
             uint8_t data = 0x0f;
             uint8_t buf[10];
-            uint8_t cmdBuf[10] = {0x53, 0x59, 0x02, 0x08, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
+            uint8_t cmdBuf[10] = {0x53, 0x59, 0x01, 0x01, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
             cmdBuf[6] = MODE_SLEEP;
             cmdBuf[7] = sumData(7, cmdBuf);
             write_array(cmdBuf, 10);
@@ -70,18 +70,18 @@ namespace esphome
             static int buffer_index = 0;
             
             while (available()) {
-            uint8_t byte = read();
-            
-            // Store byte in buffer
-            if (buffer_index < sizeof(buffer)) {
-                buffer[buffer_index++] = byte;
-            }
-            
-            // Check for end of frame marker (0x54, 0x43)
-            if (buffer_index >= 2 && buffer[buffer_index - 2] == 0x54 && buffer[buffer_index - 1] == 0x43) {
-                populateData(buffer, buffer_index);
-                buffer_index = 0;
-            }
+                uint8_t byte = read();
+                
+                // Store byte in buffer
+                if (buffer_index < sizeof(buffer)) {
+                    buffer[buffer_index++] = byte;
+                }
+                
+                // Check for end of frame marker (0x54, 0x43)
+                if (buffer_index >= 2 && buffer[buffer_index - 2] == 0x54 && buffer[buffer_index - 1] == 0x43) {
+                    populateData(buffer, buffer_index);
+                    buffer_index = 0;
+                }
             }
         }
 
