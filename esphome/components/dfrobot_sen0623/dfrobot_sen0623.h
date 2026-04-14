@@ -29,18 +29,14 @@ namespace esphome {
 namespace dfrobot_sen0623 {
 
 class DfrobotSen0623Component : public uart::UARTDevice, public Component {
-#ifdef USE_SWITCH
-  SUB_SWITCH(request_rate)
-  SUB_SWITCH(hp_led)
-#endif
+// #ifdef USE_SWITCH
+//   SUB_SWITCH(request_rate)
+//   SUB_SWITCH(hp_led)
+// #endif
 
 
   public:
-    bool process_packet(uint8_t *packetData, size_t len);
 
-    void print_data(std::string tag, const uint8_t *bytes, size_t len);
-    void configWorkMode(uint8_t mode);
-    void sensorReset();
     void populateData();
 
     // sensor
@@ -51,6 +47,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     // text sensor 
     void set_status_text_sensor(text_sensor::TextSensor *status_text_sensor) { status_text_sensor_ = status_text_sensor; }
     void set_movement_text_sensor(text_sensor::TextSensor *movement_text_sensor) { movement_text_sensor_ = movement_text_sensor; }
+    void set_sleep_state_text_sensor(text_sensor::TextSensor *sleep_state_text_sensor) { sleep_state_text_sensor_ = sleep_state_text_sensor; }
     // binary_sensor
     void set_presence_binary_sensor(binary_sensor::BinarySensor *presence_sensor) { presence_sensor_ = presence_sensor; }
     // button
@@ -58,8 +55,8 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     void set_mode_fall_button(button::Button *mode_fall_button) { mode_fall_button_ = mode_fall_button; }
     void set_mode_sleep_button(button::Button *mode_sleep_button) { mode_sleep_button_ = mode_sleep_button; }
     // switch
-    void set_switch_request_rate(bool val);
-    void set_switch_hp_led(bool val);
+    // void set_switch_request_rate(bool val);
+    // void set_switch_hp_led(bool val);
     // actions
     void cmd_reset();
     void cmd_mode_fall();
