@@ -800,7 +800,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
             }
             write_array(cmdBuf, 9 + len);
             timeStart1 = esphome::millis();
-            count = 0;
+            count = 0x00;
         }
 
         if (this->available() > 0)
@@ -814,7 +814,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
         if ((esphome::millis() - timeStart) > TIME_OUT)
         {
             ESP_LOGE("DFRobot_HumanDetection", "Time out");
-            return 2;
+            return 0x02;
         }
 
         switch (state)
@@ -824,7 +824,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
             {
                 retData[0] = data;
                 state = CMD_HEAD;
-                count = 0; // Reset count
+                count = 0x00; // Reset count
             }
             break;
         case CMD_HEAD:
@@ -905,7 +905,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
         case CMD_END_L:
             retData[8 + _len] = data;
             esphome::delay(50);
-            return 0;
+            return 0x00;
         default:
             break;
         }
@@ -913,7 +913,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
         esphome::delay(50);
     }
     esphome::delay(50);
-    return 0;
+    return 0x00;
 }
 
 uint8_t DFRobot_HumanDetection::sumData(uint8_t len, uint8_t *buf)
