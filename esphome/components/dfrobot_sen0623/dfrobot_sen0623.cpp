@@ -47,18 +47,16 @@ namespace esphome
 
         void DfrobotSen0623Component::setup()
         {
-            ESP_LOGD("Setup", "Initializing DfrobotSen0623Component...");
-            this->sen0623_.begin();
-            ESP_LOGD("Sending sleep command", "Set mode to sleep for DfrobotSen0623Component...");
-            // cmd_mode_sleep();
-            ESP_LOGD("Set sleep command", "Set mode to sleep for DfrobotSen0623Component...");
-            delay(100);
+            // ESP_LOGD("Sending sleep command", "Set mode to sleep for DfrobotSen0623Component...");
+            //cmd_mode_sleep();
+            // ESP_LOGD("Set sleep command", "Set mode to sleep for DfrobotSen0623Component...");
+            // delay(100);
         }
 
         void DfrobotSen0623Component::loop()
         {
             ESP_LOGD("Try to pop data", "Calling populateData for DfrobotSen0623Component...");
-            // populateData();
+            populateData();
             ESP_LOGD("Poped data", "Finished populateData for DfrobotSen0623Component...");
             delay(50);
         }

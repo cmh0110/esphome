@@ -16,21 +16,6 @@ namespace esphome
 {
 namespace dfrobot_sen0623
 {
-uint8_t DFRobot_HumanDetection::begin(void)
-{
-    ESP_LOGE("Begin", "Initializing DFRobot_HumanDetection...");
-    esphome::delay(1000); // Startup initialization wait time
-    uint8_t data = 0x0f;
-    uint8_t buf[10];
-    ESP_LOGE("Checking if ready", "Initializing DFRobot_HumanDetection...");
-    if (getData(0x01, 0x83, 1, &data, buf) == 0)
-    {
-        ESP_LOGE("C1001 did not start: %02X", 0);
-        // esphome::delay(100);
-        return 0;
-    }
-    return 1;
-}
 
 uint8_t DFRobot_HumanDetection::configWorkMode(eWorkMode mode)
 {
