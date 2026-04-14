@@ -771,7 +771,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
     uint32_t timeStart1 = 0;
     uint8_t data = 0, state = CMD_WHITE;
     uint16_t _len = 0;
-    uint8_t count = 0;
+    int count = 0;
 
     uint8_t cmdBuf[20];
     cmdBuf[0] = 0x53;
