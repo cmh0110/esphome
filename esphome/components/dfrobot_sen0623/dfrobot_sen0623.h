@@ -61,6 +61,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     void cmd_reset();
     void cmd_mode_fall();
     void cmd_mode_sleep();
+    uint8_t DfrobotSen0623Component::sumData(uint8_t len, uint8_t *buf);
 
     void setup() override;
     void loop() override;

@@ -38,18 +38,28 @@ namespace esphome
 
         void DfrobotSen0623Component::cmd_mode_fall()
         {
-            sen0623_.configWorkMode(DFRobot_HumanDetection::eWorkMode::eFallingMode);
+            uint8_t data = 0x0f;
+            uint8_t buf[10];
+            uint8_t cmdBuf[10] = {0x53, 0x59, 0x02, 0x08, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
+            cmdBuf[6] = MODE_FALL;
+            cmdBuf[7] = sumData(7, cmdBuf);
+            write_array(cmdBuf, 10);
         }
 
         void DfrobotSen0623Component::cmd_mode_sleep()
         {
-            sen0623_.configWorkMode(DFRobot_HumanDetection::eWorkMode::eSleepMode);
+            uint8_t data = 0x0f;
+            uint8_t buf[10];
+            uint8_t cmdBuf[10] = {0x53, 0x59, 0x02, 0x08, 0x00, 0x01, 0x00, 0x00, 0x54, 0x43};
+            cmdBuf[6] = MODE_SLEEP;
+            cmdBuf[7] = sumData(7, cmdBuf);
+            write_array(cmdBuf, 10);
         }
 
         void DfrobotSen0623Component::setup()
         {
             // ESP_LOGD("Sending sleep command", "Set mode to sleep for DfrobotSen0623Component...");
-            //cmd_mode_sleep();
+            cmd_mode_sleep();
             // ESP_LOGD("Set sleep command", "Set mode to sleep for DfrobotSen0623Component...");
             // delay(100);
         }
@@ -69,9 +79,7 @@ namespace esphome
             
             // Check for end of frame marker (0x54, 0x43)
             if (buffer_index >= 2 && buffer[buffer_index - 2] == 0x54 && buffer[buffer_index - 1] == 0x43) {
-                ESP_LOGD("Try to pop data", "Calling populateData for DfrobotSen0623Component...");
                 populateData(buffer, buffer_index);
-                ESP_LOGD("Poped data", "Finished populateData for DfrobotSen0623Component...");
                 buffer_index = 0;
             }
             }
@@ -176,6 +184,17 @@ namespace esphome
                 ESP_LOGD(TAG, "Received unknown operation: %02X %02X", operation.first, operation.second);
             }
         }
+
+    uint8_t DfrobotSen0623Component::sumData(uint8_t len, uint8_t *buf)
+    {
+        uint16_t data = 0;
+        uint8_t *_buf = buf;
+        for (uint8_t i = 0; i < len; i++)
+        {
+            data += _buf[i];
+        }
+        return data & 0xff;
+    }
 
     } // namespace dfrobot_sen0623
 } // namespace esphome
