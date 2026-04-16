@@ -786,7 +786,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
     cmdBuf[7 + len] = 0x54;
     cmdBuf[8 + len] = 0x43;
     
-    ESP_LOGE("Getting data", "DFRobot_HumanDetection: Sending command to get data (Con: %02X, Cmd: %02X, Len: %d)", con, cmd, len);
+    ESP_LOGD("Getting data", "DFRobot_HumanDetection: Sending command to get data (Con: %02X, Cmd: %02X, Len: %d)", con, cmd, len);
 
     while (true)
     {
@@ -874,7 +874,7 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
                 retData[5] = data;
                 _len |= data;
                 state = CMD_DATA;
-                ESP_LOGE("DFRobot_HumanDetection", "Data length: %d", _len);
+                ESP_LOGD("DFRobot_HumanDetection", "Data length: %d", _len);
             }
             break;
         case CMD_DATA:
