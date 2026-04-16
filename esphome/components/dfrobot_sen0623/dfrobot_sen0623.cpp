@@ -102,13 +102,17 @@ namespace esphome
             //     ESP_LOGD(TAG, "Received human distance data");
                 if (this->human_distance_sensor_ != nullptr) {
                     // this->human_distance_sensor_->publish_state(buffer[6] << 8 | buffer[7]);
-                    this->human_distance_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::eHumanDistance));
+                    uint16_t distance = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanDistance);
+                    this->human_distance_sensor_->publish_state(distance);
+                    ESP_LOGD("C1001", "Human distance: %d cm", distance);
                 }
             // } else if(operation == OP_REQ_HUMAN_MOVE_RANGE) {
             //     ESP_LOGD(TAG, "Received human move range data");
                 if (this->human_move_range_sensor_ != nullptr) {
                     // this->human_move_range_sensor_->publish_state(buffer[6]);
-                    this->human_move_range_sensor_->publish_state(sen0623_.smHumanData(DFRobot_HumanDetection::eHumanMovingRange));
+                    uint16_t move_range = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanMovingRange);
+                    this->human_move_range_sensor_->publish_state(move_range);
+                    ESP_LOGD("C1001", "Human move range: %d cm", move_range);
                 }
             // } else if(operation == OP_REQ_HUMAN_PRESENCE) {
             //     ESP_LOGD(TAG, "Received human presence data");
