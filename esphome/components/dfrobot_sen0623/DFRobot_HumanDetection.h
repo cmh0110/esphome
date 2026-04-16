@@ -12,10 +12,11 @@
 #pragma once
 #include "esphome/core/component.h"
 #include "esphome/components/uart/uart.h"
-namespace esphome
-{
-namespace dfrobot_sen0623
-{
+namespace esphome {
+namespace dfrobot_sen0623 {
+
+class DfrobotSen0623Component;
+
 #define _DFROBOT_HUMAN_DETECTION_
 #define TIME_OUT 5 * 1000
 
@@ -449,6 +450,8 @@ public:
      */
     uint8_t dmFallConfig(eDmFallConfig con, uint32_t data);
 
+    DfrobotSen0623Component *parent_{nullptr};
+
     private:
     /**
      * @fn getData
@@ -460,6 +463,7 @@ public:
      * @param retData Returned data
      * @return Communication status
      */
+
     uint8_t getData(uint8_t con, uint8_t cmd, uint16_t len, uint8_t *senData, uint8_t *retData);
     uint8_t sumData(uint8_t len, uint8_t *buf);
     void write_array(const uint8_t *data, size_t len);

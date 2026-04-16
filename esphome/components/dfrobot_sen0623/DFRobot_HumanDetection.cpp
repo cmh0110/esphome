@@ -11,6 +11,7 @@
 
 #include "DFRobot_HumanDetection.h"
 #include "stdio.h"
+#include "dfrobot_sen0623.h"
 
 namespace esphome
 {
@@ -791,18 +792,18 @@ uint8_t DFRobot_HumanDetection::getData(uint8_t con, uint8_t cmd, uint16_t len, 
     {
         if ((esphome::millis() - timeStart1) > 1000)
         {
-            while (this->available() > 0)
+            while (this->parent_->messageAvailable_() > 0)
             {
-                this->read_byte(&data);
+                this->parent_->uartReadByte_(&data);
             }
             write_array(cmdBuf, 9 + len);
             timeStart1 = esphome::millis();
             count = 0x00;
         }
 
-        if (this->available() > 0)
+        if (this->parent_->messageAvailable_() > 0)
         {
-            this->read_byte(&data);
+            this->parent_->uartReadByte_(&data);
             // DBG(data);
             // timeStart1 = esphome::millis();
         }
@@ -922,7 +923,7 @@ uint8_t DFRobot_HumanDetection::sumData(uint8_t len, uint8_t *buf)
 
 void DFRobot_HumanDetection::write_array(const uint8_t *data, size_t len) {
     for (size_t i = 0; i < len; i++) {
-        this->write(data[i]);
+        this->parent_->uartWrite_(data[i]);
     }
 }
 }

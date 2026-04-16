@@ -37,7 +37,7 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
 
   public:
 
-    void populateData(uint8_t *buffer, int length);
+    void populateData();
 
     // sensor
     void set_heart_rate_sensor(sensor::Sensor *rate_sensor) { heart_rate_sensor_ = rate_sensor; }
@@ -61,7 +61,6 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     void cmd_reset();
     void cmd_mode_fall();
     void cmd_mode_sleep();
-    uint8_t sumData(uint8_t len, uint8_t *buf);
 
     void setup() override;
     void loop() override;
@@ -81,6 +80,12 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     button::Button *reset_button_{nullptr};
     button::Button *mode_fall_button_{nullptr};
     button::Button *mode_sleep_button_{nullptr};
+
+    uint8_t messageAvailable_();
+    void uartWrite_(uint8_t data);
+    void uartReadByte_(uint8_t *data);
+
+    friend class DFRobot_HumanDetection;
 
     DFRobot_HumanDetection sen0623_ = DFRobot_HumanDetection();
 };
