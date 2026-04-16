@@ -25,8 +25,6 @@ namespace esphome
 
         static const char *TAG = "dfrobot_sen0623.component";
 
-        bool _switch_request_rate = false;
-
         void DfrobotSen0623Component::cmd_reset()
         {
             // uint8_t data = 0x0f;
@@ -71,24 +69,16 @@ namespace esphome
 
         void DfrobotSen0623Component::loop()
         {
-            // static uint8_t buffer[64];
-            // static int buffer_index = 0;
-            
-            // while (available()) {
-            //     uint8_t byte = read();
-                
-            //     // Store byte in buffer
-            //     if (buffer_index < sizeof(buffer)) {
-            //         buffer[buffer_index++] = byte;
-            //     }
-                
-            //     // Check for end of frame marker (0x54, 0x43)
-            //     if (buffer_index >= 2 && buffer[buffer_index - 2] == 0x54 && buffer[buffer_index - 1] == 0x43) {
-            //         populateData(buffer, buffer_index);
-            //         buffer_index = 0;
-            //     }
-            // }
-            populateData();
+            if (cmd_queue_.is_empty()) {
+                // Command queue empty. Read sensor state.
+                cmd_queue_.enqueue(make_unique<ReadStateCommand>());
+            }
+
+            // Commands are non-blocking and need to be called repeatedly.
+            if (cmd_queue_.process(this)) {
+                // Dequeue if command is done
+                cmd_queue_.dequeue();
+            }
         }
 
         void DfrobotSen0623Component::dump_config()
@@ -96,10 +86,12 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "DfrobotSen0623Component");
         }
 
-        void DfrobotSen0623Component::populateData() {
+        int8_t DfrobotSen0623Component::populateData() {
             // std::pair<uint8_t, uint8_t> operation = {buffer[2], buffer[3]};
             // if(operation == OP_REQ_HUMAN_DISTANCE) {
             //     ESP_LOGD(TAG, "Received human distance data");
+            if (millis() - ts_last_cmd_sent_ > 1000) {
+                ts_last_cmd_sent_ = millis();
                 if (this->human_distance_sensor_ != nullptr) {
                     // this->human_distance_sensor_->publish_state(buffer[6] << 8 | buffer[7]);
                     uint16_t distance = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanDistance);
@@ -197,9 +189,9 @@ namespace esphome
                     this->heart_rate_sensor_->publish_state(rate);
                     ESP_LOGD("C1001", "Heart rate: %d bpm", rate);
                 }
-            // } else {
-            //     ESP_LOGD(TAG, "Received unknown operation: %02X %02X", operation.first, operation.second);
-            // }
+                return 1;
+            }
+            return 0;
         }
 
     // uint8_t DfrobotSen0623Component::sumData(uint8_t len, uint8_t *buf)
