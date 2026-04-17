@@ -81,6 +81,10 @@ namespace esphome
             }
         }
 
+        int8_t DfrobotSen0623Component::enqueue(std::unique_ptr<Command> cmd) {
+            return cmd_queue_.enqueue(std::move(cmd));  // Transfer ownership using std::move
+        }
+
         void DfrobotSen0623Component::dump_config()
         {
             ESP_LOGCONFIG(TAG, "DfrobotSen0623Component");
