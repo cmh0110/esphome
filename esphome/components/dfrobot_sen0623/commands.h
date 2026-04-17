@@ -37,5 +37,5 @@ class ReadStateCommand : public Command {
   uint32_t timeout_ms_{500};
 };
 
-}  // namespace dfrobot_sen0395
+}  // namespace dfrobot_sen0623
 }  // namespace esphome
