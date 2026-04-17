@@ -248,7 +248,7 @@ namespace esphome
 
     // Run execute method of first in line command.
     // Execute is non-blocking and has to be called until it returns 1.
-    uint8_t CircularCommandQueue::process(DfrobotSen0395Component *parent) {
+    uint8_t CircularCommandQueue::process(DfrobotSen0623Component *parent) {
     if (!is_empty()) {
         return commands_[front_]->execute(parent);
     } else {
