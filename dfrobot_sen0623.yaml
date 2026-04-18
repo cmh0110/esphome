@@ -1,0 +1,81 @@
+esphome:
+  name: sen0623-device
+  friendly_name: SEN0623 Device
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+api:
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# Update pins/baud for your wiring and module requirements.
+uart:
+  id: uart_sen0623
+  tx_pin: GPIO17
+  rx_pin: GPIO16
+  baud_rate: 115200
+
+dfrobot_sen0623:
+  id: sen0623
+  uart_id: uart_sen0623
+
+binary_sensor:
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    presence:
+      name: "SEN0623 Presence"
+
+sensor:
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    heart_rate:
+      name: "SEN0623 Heart Rate"
+    breath_rate:
+      name: "SEN0623 Breath Rate"
+    human_distance:
+      name: "SEN0623 Human Distance"
+    human_move_range:
+      name: "SEN0623 Human Move Range"
+
+text_sensor:
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    status:
+      name: "SEN0623 Status"
+    movement:
+      name: "SEN0623 Movement"
+
+switch:
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    type: request_rate
+    name: "SEN0623 Request Rate"
+
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    type: hp_led
+    name: "SEN0623 HP LED"
+
+button:
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    type: reset
+    name: "SEN0623 Reset"
+
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    type: mode_fall
+    name: "SEN0623 Mode Fall"
+
+  - platform: dfrobot_sen0623
+    dfrobot_sen0623_id: sen0623
+    type: mode_sleep
+    name: "SEN0623 Mode Sleep"

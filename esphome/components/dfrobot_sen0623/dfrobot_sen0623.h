@@ -48,10 +48,10 @@ class CircularCommandQueue {
 };
 
 class DfrobotSen0623Component : public uart::UARTDevice, public Component {
-// #ifdef USE_SWITCH
-//   SUB_SWITCH(request_rate)
-//   SUB_SWITCH(hp_led)
-// #endif
+#ifdef USE_SWITCH
+  SUB_SWITCH(request_rate)
+  SUB_SWITCH(hp_led)
+#endif
 
 
   public:
@@ -74,8 +74,8 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
     void set_mode_fall_button(button::Button *mode_fall_button) { mode_fall_button_ = mode_fall_button; }
     void set_mode_sleep_button(button::Button *mode_sleep_button) { mode_sleep_button_ = mode_sleep_button; }
     // switch
-    // void set_switch_request_rate(bool val);
-    // void set_switch_hp_led(bool val);
+    void set_switch_request_rate(bool val);
+    void set_switch_hp_led(bool val);
     // actions
     void cmd_reset();
     void cmd_mode_fall();
