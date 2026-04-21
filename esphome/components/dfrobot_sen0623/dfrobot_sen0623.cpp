@@ -95,8 +95,8 @@ namespace esphome
             // std::pair<uint8_t, uint8_t> operation = {buffer[2], buffer[3]};
             // if(operation == OP_REQ_HUMAN_DISTANCE) {
             //     ESP_LOGD(TAG, "Received human distance data");
-            if (millis() - ts_last_cmd_sent_ > 200) {
-                ts_last_cmd_sent_ = millis();
+            // if (millis() - ts_last_cmd_sent_ > 200) {
+            //     ts_last_cmd_sent_ = millis();
                 if ((this->human_distance_sensor_ != nullptr) && currentCommand == 0) {
                     // this->human_distance_sensor_->publish_state(buffer[6] << 8 | buffer[7]);
                     uint16_t distance = sen0623_.smHumanData(DFRobot_HumanDetection::eHumanDistance);
@@ -196,8 +196,8 @@ namespace esphome
                 }
                 currentCommand++;
                 return 1;
-            }
-            return 0;
+            // }
+            // return 0;
         }
 
     // uint8_t DfrobotSen0623Component::sumData(uint8_t len, uint8_t *buf)
