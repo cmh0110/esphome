@@ -56,8 +56,9 @@ class DfrobotSen0623Component : public uart::UARTDevice, public Component {
 
   public:
 
-    int8_t populateData(int currentCommand);
+    int8_t populateData();
     int totalCommands{6};
+    int currentCommand{0};
 
     // sensor
     void set_heart_rate_sensor(sensor::Sensor *rate_sensor) { heart_rate_sensor_ = rate_sensor; }
