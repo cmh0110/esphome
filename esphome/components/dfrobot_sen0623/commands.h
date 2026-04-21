@@ -35,6 +35,7 @@ class ReadStateCommand : public Command {
 
  protected:
   uint32_t timeout_ms_{500};
+  int currentCommand{0};
 };
 
 }  // namespace dfrobot_sen0623

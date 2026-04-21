@@ -35,7 +35,11 @@ uint8_t Command::execute(DfrobotSen0623Component *parent) {
 
 uint8_t ReadStateCommand::execute(DfrobotSen0623Component *parent) {
   this->parent_ = parent;
-  if (this->parent_->populateData()) {
+  if (this->parent_->populateData(currentCommand)) {
+    currentCommand++;
+    if (currentCommand > this->parent_->totalCommands) {
+      currentCommand = 0;
+    }
     return 1;  // Command done
   }
   if (millis() - this->parent_->ts_last_cmd_sent_ > this->timeout_ms_) {

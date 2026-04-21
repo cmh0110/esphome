@@ -17,7 +17,6 @@ std::pair<uint8_t, uint8_t> OP_SLEEP_STATE = {0x81, 0x01};
 std::pair<uint8_t, uint8_t> OP_SET_MODE = {0x01, 0x01};
 uint8_t MODE_SLEEP = 0x02;
 uint8_t MODE_FALL = 0x01;
-int currentCommand = 0;
 
 namespace esphome
 {
@@ -91,7 +90,8 @@ namespace esphome
             ESP_LOGCONFIG(TAG, "DfrobotSen0623Component");
         }
 
-        int8_t DfrobotSen0623Component::populateData() {
+        int8_t DfrobotSen0623Component::populateData(int currentCommand) {
+             if (currentCommand == 0) {
             // std::pair<uint8_t, uint8_t> operation = {buffer[2], buffer[3]};
             // if(operation == OP_REQ_HUMAN_DISTANCE) {
             //     ESP_LOGD(TAG, "Received human distance data");
@@ -194,7 +194,6 @@ namespace esphome
                     this->heart_rate_sensor_->publish_state(rate);
                     ESP_LOGD("C1001", "Heart rate: %d bpm", rate);
                 }
-                currentCommand++;
                 return 1;
             // }
             // return 0;
