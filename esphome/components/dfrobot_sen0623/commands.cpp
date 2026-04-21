@@ -14,7 +14,7 @@ static const char *const TAG = "dfrobot_sen0623.commands";
 uint8_t Command::execute(DfrobotSen0623Component *parent) {
   this->parent_ = parent;
   if (this->cmd_sent_) {
-    int8_t rc = this->parent_->populateData();
+    int8_t rc = 1;
     if (millis() - this->parent_->ts_last_cmd_sent_ > this->timeout_ms_) {
       ESP_LOGD(TAG, "Command timeout");
       if (this->retries_left_ > 0) {
