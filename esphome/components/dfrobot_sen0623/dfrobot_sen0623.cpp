@@ -91,7 +91,6 @@ namespace esphome
         }
 
         int8_t DfrobotSen0623Component::populateData(int currentCommand) {
-             if (currentCommand == 0) {
             // std::pair<uint8_t, uint8_t> operation = {buffer[2], buffer[3]};
             // if(operation == OP_REQ_HUMAN_DISTANCE) {
             //     ESP_LOGD(TAG, "Received human distance data");
@@ -197,7 +196,7 @@ namespace esphome
                 return 1;
             // }
             // return 0;
-        }
+    }
 
     // uint8_t DfrobotSen0623Component::sumData(uint8_t len, uint8_t *buf)
     // {
