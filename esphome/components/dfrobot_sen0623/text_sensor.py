@@ -9,6 +9,7 @@ from . import CONF_DFROBOT_SEN0623_ID, DfrobotSen0623Component
 DEPENDENCIES = ["dfrobot_sen0623"]
 
 CONF_HUMAN_MOVEMENT = "movement"
+CONF_SLEEP_STATE = "sleep_state"
 
 CONFIG_SCHEMA = (
     cv.Schema(
@@ -16,6 +17,7 @@ CONFIG_SCHEMA = (
             cv.GenerateID(CONF_DFROBOT_SEN0623_ID): cv.use_id(DfrobotSen0623Component),
             cv.Optional(CONF_STATUS): text_sensor.text_sensor_schema(),
             cv.Optional(CONF_HUMAN_MOVEMENT): text_sensor.text_sensor_schema(),
+            cv.Optional(CONF_SLEEP_STATE): text_sensor.text_sensor_schema(),
         }
     )
 )
@@ -29,4 +31,7 @@ async def to_code(config):
         cg.add(parent.set_status_text_sensor(sens))
     if movement := config.get(CONF_HUMAN_MOVEMENT):
         sens = await text_sensor.new_text_sensor(movement)
+        cg.add(parent.set_movement_text_sensor(sens))
+    if sleep_state := config.get(CONF_HUMAN_MOVEMENT):
+        sens = await text_sensor.new_text_sensor(sleep_state)
         cg.add(parent.set_movement_text_sensor(sens))
