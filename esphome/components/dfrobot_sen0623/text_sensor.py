@@ -32,6 +32,6 @@ async def to_code(config):
     if movement := config.get(CONF_HUMAN_MOVEMENT):
         sens = await text_sensor.new_text_sensor(movement)
         cg.add(parent.set_movement_text_sensor(sens))
-    if sleep_state := config.get(CONF_HUMAN_MOVEMENT):
+    if sleep_state := config.get(CONF_SLEEP_STATE):
         sens = await text_sensor.new_text_sensor(sleep_state)
-        cg.add(parent.set_movement_text_sensor(sens))
+        cg.add(parent.set_sleep_state_text_sensor(sens))
