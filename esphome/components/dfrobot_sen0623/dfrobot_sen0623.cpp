@@ -265,5 +265,16 @@ namespace esphome
     }
     }
 
+    void DfrobotSen0623Component::set_switch_request_rate(bool val) {
+        // TODO: Implement request rate switch functionality
+        // I have no idea what should be here, maybe implement this? DFRobot_HumanDetection::configWorkMode
+        return;
+    }
+    void DfrobotSen0623Component::set_switch_hp_led(bool val) {
+        // TODO: Implement HP LED switch functionality
+        // Probably implement this? DFRobot_HumanDetection::configLEDLight
+        return;
+    }
+
 } // namespace dfrobot_sen0623
 } // namespace esphome
